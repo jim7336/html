@@ -1,0 +1,41 @@
+<div class="input-append">
+                <input type="hidden" id="logo" name="logo" value="{$list['logo']}">
+                <p><input type="file" id="file1" name="file"/></p>
+                <p><img id="img1" alt="" src="{$list['logo']}"/></p>
+                <p>返回格式 ：{"status":1,"info":"\u4e0a\u4f20\u6210\u529f","data":{"url":"http:\/\/exploiter.oss-cn-beijing.aliyuncs.com\/Uploads\/Download\/2017-06-16\/59439e4b994b4.jpg"}}</p>
+                <p>解析json：<textarea id="json_input" name="json_input" class="json_input" style="font-size: 11px !important; resize: both; width: 1078px; max-width: 1070px;" rows="10" spellcheck="false" placeholder='{
+    "status": 1,
+    "info": "上传成功",
+    "data": {
+        "url": "http://exploiter.oss-cn-beijing.aliyuncs.com/Uploads/Download/2017-06-16/59439e4b994b4.jpg"
+    }
+}'></textarea>
+</p>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $("#file1").change(function () {
+                        ajaxFileUpload();
+                    })
+                })
+                function ajaxFileUpload() {
+                    $.ajaxFileUpload({
+                                url: '/Core/File/ajaxUpload', //用于文件上传的服务器端请求地址
+                                secureuri: false, //是否需要安全协议，一般设置为false
+                                fileElementId: 'file1', //文件上传域的ID
+                                dataType: 'json', //返回值类型 一般设置为json
+                                success: function (data, status)  //服务器成功响应处理函数
+                                {
+                                    if(data.status != 0){
+                                        $("#img1").attr("src", data.data.url);
+                                        $('#logo').val(data.data.url);
+                                        updateAlert(data.info);
+                                    }else{
+                                        updateAlert(data.info);
+                                    }
+
+                                }
+                            })
+                    return false;
+                }
+            </script>
